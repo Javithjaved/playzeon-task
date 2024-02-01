@@ -1,0 +1,81 @@
+@import url("https://cdn.sync");
+.backgroundImage{
+    background-image:url(../image/image3.jpg);
+    background-position: center !important;
+    background-size: cover !important;
+    height: 100vh !important;
+    width: 100vw !important; 
+    overflow: hidden;
+}
+body{
+    overflow-x: hidden;
+}
+.logo{
+    height: 10vh;
+}
+.hr{
+    color: white;
+    margin-left: 46%;
+    border-top: 3px solid gray;
+}
+.backgroundcolor{
+    background-color: whitesmoke;
+ 
+}
+.home1{
+    background-color:whitesmoke;
+}
+.home1:hover{
+    color: red;
+}
+.home{
+    color: red;
+}
+.cardimage{
+    background-color: rgba(128, 128, 128, 0.333);
+    height: 70px;
+    cursor: pointer ;
+}
+.Cardtext{
+    font-size: 12px;
+}
+.cardBody{
+    border: 1px;
+    border-style: solid;
+    border-color:whitesmoke;
+}
+.cardBody:hover{
+    border-color: red;
+    cursor: pointer;
+  
+}
+.iconcolor{
+    background-color: #f96d23;
+    color: #f96d23;
+}
+.iconcoach{
+    background-color: #ffd11a;
+    color: #ffd11a;
+}
+.iconadmin{
+    background-color:#5d3891 ;
+    color: #5d3891;
+}
+
+.iconmaintenance{
+    background-color:#6c757d ;
+    color: #6c757d;
+}
+.icontournament{
+    background-color:#319ff5;
+    color: #319ff5;
+}
+.iconPlayer{
+    background-color: green;
+    color: green;
+}       
+.offcanvas-end {
+    left: auto !important;
+    right: 0;
+    transform: translateX(3) !important;
+}
