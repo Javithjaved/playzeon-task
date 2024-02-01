@@ -28,7 +28,7 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setData({ ...data, [e.target.name]: e.target.value });
     }
-
+//test commit
     const handleBookingTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setBookingType(e.target.value);
         if (e.target.value === "Single booking") {
