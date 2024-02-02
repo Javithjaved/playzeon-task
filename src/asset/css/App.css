@@ -47,7 +47,6 @@ body{
 .cardBody:hover{
     border-color: red;
     cursor: pointer;
-  
 }
 .iconcolor{
     background-color: #f96d23;

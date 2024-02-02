@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import photo from "../asset/image/logo.png";
 import axios from "axios";
 import { Button, Col, Container, Form, Navbar, Row } from "react-bootstrap";
-const LoginPage: React.FC = () => {
-    
+const LoginPage: React.FC = ({setIsSignedIn}) => {
     const baseurl = process.env.REACT_APP_BASEURL;
     const Navigate = useNavigate();
     interface login {
@@ -30,7 +29,9 @@ const LoginPage: React.FC = () => {
                 console.log(res.data.accessToken);
                 localStorage.setItem("refreshToken", res.data.refreshToken);
                 console.log(res.data.refreshToken);
-                window.location.href = "/center";
+                // window.location.href = "/center";
+                setIsSignedIn(true);
+                Navigate("/center")
                 console.log(res);
             })
             .catch(err => {

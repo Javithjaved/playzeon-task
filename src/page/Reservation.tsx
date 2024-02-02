@@ -4,7 +4,7 @@ import { Button, ButtonGroup, Col, Container, FloatingLabel, Form, Offcanvas, Ro
 import { Facilitytype, Facilities, BookingType, FrequencyWeeks, time, days } from '../utils/data.tsx';
 import Moment from "react-moment";
 import 'react-datepicker/dist/react-datepicker.css';
-
+import DigitalClock from '../components/DigitalClock.tsx';
 interface userData {
     data: string;
     setData: React.Dispatch<React.SetStateAction<string[]>>;
@@ -16,9 +16,11 @@ interface userData {
     setTimeValue: React.Dispatch<React.SetStateAction<[]>>;
     timeset: string;
     settimeSet: React.Dispatch<React.SetStateAction<string[]>>;
+    showSelect: string;
+    setShowSelect: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookingType, showFrequency, setShowFrequency, timevalue, setTimeValue, timeset, settimeSet }) => {
+const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookingType, showFrequency, setShowFrequency, timevalue, setTimeValue, timeset, settimeSet, showSelect, setShowSelect }) => {
     const Facility = Facilitytype;
     const Facilitie = Facilities;
     const Booking = BookingType;
@@ -28,15 +30,19 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setData({ ...data, [e.target.name]: e.target.value });
     }
-//test commit
     const handleBookingTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setBookingType(e.target.value);
         if (e.target.value === "Single booking") {
             setShowFrequency(false);
-        } else {
+            setShowSelect(false);
+        }
+        else {
             setShowFrequency(true);
+            setShow(true);
+            setShowSelect(true);
         }
     };
+
 
     const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const startDateValue = e.target.value;
@@ -60,18 +66,19 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                 <Col xs={12} className="backgroundcolor">
                     <div className="bg-white rounded-3 p-2">
                         <Row >
-                            <Col  ><Icon icon="akar-icons:box" className="iconcolor me-1 " /> <span>Player/Not Paid</span></Col>
-                            <Col ><Icon icon="akar-icons:box" className="iconcoach me-1" /><span>Coach</span></Col>
-                            <Col ><Icon icon="akar-icons:box" className="iconadmin me-1" /><span>Admin</span></Col>
-                            <Col ><Icon icon="akar-icons:box" className="iconmaintenance me-1" /><span>Maintenance</span></Col>
-                            <Col ><Icon icon="akar-icons:box" className="icontournament me-1" /><span>Tournament</span></Col>
-                            <Col ><Icon icon="akar-icons:box" className="iconPlayer me-1" /><span>Player/Paid</span></Col>
-                            <Col ><p className="fw-medium"> Booking schedules</p></Col>
+                            <Col xs={8} md={9} className="d-md-flex justify-content-between " >
+                                <div className="me-sm-3"> <Icon icon="akar-icons:box" className="iconcolor me-1 " /> <span>Player/Not Paid</span></div>
+                                <div className="me-sm-3"><Icon icon="akar-icons:box" className="iconcoach me-1" /><span>Coach</span></div>
+                                <div className="me-sm-3"><Icon icon="akar-icons:box" className="iconadmin me-1" /><span>Admin</span></div>
+                                <div className="me-sm-3"><Icon icon="akar-icons:box" className="iconmaintenance me-1" /><span>Maintenance</span></div>
+                                <div className="me-sm-3"><Icon icon="akar-icons:box" className="icontournament me-1" /><span>Tournament</span></div>
+                                <div className="me-sm-3"><Icon icon="akar-icons:box" className="iconPlayer me-1" /><span>Player/Paid</span></div></Col>
+                            <Col xs={4} md={3} ><p className="fw-medium text-end me-3 "> Booking schedules</p></Col>
                         </Row>
                         <hr></hr>
                         <Row>
-                            <div className="d-flex">
-                                <Col xs={3}>
+                            <div className="d-md-flex">
+                                <Col md={2} lg={2} xl={3} >
                                     <Form.Label >Facility type <span className="text-danger"> *</span></Form.Label>
                                     <Form.Select value={data.Facility} className="form-control mt-2" name="Facility" onChange={(e) => handleChange(e)} >
                                         {Facility.map((Facility) => {
@@ -79,27 +86,27 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                         })}
                                     </Form.Select>
                                 </Col>
-                                <Col xs={3}>
-                                    <Form.Label className="mx-5">Facilities <span className="text-danger"> *</span></Form.Label>
-                                    <Form.Select value={Facilitie} className="form-control mt-2 w-75 mx-5" name="Facilitie" onChange={(e) => handleChange(e)} >
+                                <Col md={2} lg={2} xl={3} className="ms-2">
+                                    <Form.Label >Facilities <span className="text-danger"> *</span></Form.Label>
+                                    <Form.Select value={Facilitie} className="form-control mt-2  ms-md-2  mx-0  " name="Facilitie" onChange={(e) => handleChange(e)} >
                                         {Facilitie.map((Facilitie) => {
                                             return <option value={Facilitie}>{Facilitie}</option>;
                                         })}
                                     </Form.Select>
                                 </Col>
-                                <Col xs={3}>
-                                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                                        <Form.Label className="mx-4">Date </Form.Label>
-                                        <Form.Control type="date" className="mt-2 w-75 mx-4" name="date" value={data.date} onChange={(e) => handleChange(e)} />
+                                <Col md={2} lg={2} xl={2} className="mt-2 ms-4">
+                                    <Form.Group  controlId="formBasicEmail">
+                                        <Form.Label>Date </Form.Label>
+                                        <Form.Control type="date"    name="date" value={data.date} onChange={(e) => handleChange(e)} />
                                     </Form.Group>
                                 </Col>
-                                <Col>
+                                <Col md={2} lg={2} xl={2}>
                                     <Form.Label>&nbsp;</Form.Label>
-                                    <Button className="d-block w-75 mt-2 "><Icon icon="material-symbols:search" /><span>Search</span></Button>
+                                    <Button className="d-block  mt-2   p-lg-2 ms-md-2 w-md-50 w-lg-50  "><Icon icon="material-symbols:search" /><span>Search</span></Button>
                                 </Col>
-                                <Col>
+                                <Col md={2} lg={2} xl={2}   >
                                     <Form.Label>&nbsp;</Form.Label>
-                                    <Button className="d-block w-100 mt-2" variant="danger" onClick={handleShow} ><span  >Add a Booking</span></Button>
+                                    <Button className="d-block  mt-2 w-md-50 w-lg-50" variant="danger" onClick={handleShow} ><span  >Add a Booking</span></Button>
                                 </Col>
                             </div>
                         </Row>
@@ -121,22 +128,22 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                         <Button variant="secondary">Month</Button>
                                     </ButtonGroup>
                                 </Col>
-                                <Moment format="ddd" />
-
+                                {/* <Moment format="ddd" />
+                                <DigitalClock /> */}
                             </Row>
-                            <div className="col-12">
+                            <div className="col-12 col-lg-12 col-md-12 col-sm-12">
                                 <Offcanvas show={show} onHide={handleClose} className=" w-75" placement="end"  >
                                     <Offcanvas.Header closeButton className="bg-light">
                                         <Offcanvas.Title ><p className="fw-medium">Booking</p></Offcanvas.Title>
                                     </Offcanvas.Header>
                                     <Offcanvas.Body>
-                                        <Container>
+                                        <Container fluid>
                                             <Row>
                                                 <Col xs={8}>
                                                     <Row>
-                                                        <Col >
+                                                        <Col  >
                                                             <Form.Label><span className="fw-medium">Booking Type <span className="text-danger">*</span></span></Form.Label>
-                                                            <Form.Select value={data.Booking} className="form-control mt-2 w-100" name="Booking" onChange={(e) => handleChange(e)}>
+                                                            <Form.Select value={data.Booking} className="form-control mt-2  " name="Booking" onChange={(e) => handleChange(e)}>
                                                                 {Booking.map((Booking) => {
                                                                     return <option value={Booking}>{Booking}</option>
                                                                 })
@@ -145,7 +152,7 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                         </Col>
                                                         <Col>
                                                             <Form.Label><span className="fw-medium ">Facility Type <span className="text-danger">*</span></span></Form.Label>
-                                                            <Form.Select value={data.Facility} className="form-control mt-2 w-100" name="Facility" onChange={(e) => handleChange(e)} >
+                                                            <Form.Select value={data.Facility} className="form-control mt-2 " name="Facility" onChange={(e) => handleChange(e)} >
                                                                 {Facility.map((Facility) => {
                                                                     return <option value={Facility}>{Facility}</option>;
                                                                 })}
@@ -223,8 +230,8 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                                 }
                                                             </Form.Select></Col>
                                                     </Row>
-                                                    <p className="fs-5 mt-2 fw-medium">Select</p>
-                                                    {FrequencyWeeks && (
+                                                    {showSelect && <p className="fs-5 mt-2 fw-medium">Select</p>}
+                                                    {showSelect && (
                                                         day.map((day) => {
                                                             return (
                                                                 <Form.Check
@@ -232,8 +239,6 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                                     label={day}
                                                                     value={day}
                                                                     onClick={(e) => handleChange(e)}
-                                                                    disabled={bookingType === "Single booking"}
-                                                                // hidden={bookingType === "Single booking"}
                                                                 />
                                                             )
                                                         })
@@ -284,8 +289,8 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                 </Offcanvas>
                             </div>
                         </div>
-                    </div>
-                </Col>
+                    </div>  
+                </Col >
             </Row >
         </Container >
     )

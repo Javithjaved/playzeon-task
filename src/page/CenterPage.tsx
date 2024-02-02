@@ -42,7 +42,7 @@ const CenterPage: React.FC = () => {
                     <div className="bg-white rounded-3 p-2  ">
                         <Row className="w-100">
                             {centerData.map((center) => (
-                                <Card key={center.id} style={{ width: '17rem' }} className="cardimage mx-3 mt-4  p-0">
+                                <Card key={center.id} style={{ width: '17rem' }} className="cardimage ms-4 mt-4  p-0">
                                     <Card.Img variant="top" className="cardimage" onClick={() => handleClick()} />
                                     <Card.Body className="cardBody" onClick={() => handleClick()}>
                                         <Card.Text className="Cardtext fw-medium">
