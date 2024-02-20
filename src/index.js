@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import interceptor from '../src/interceptors.tsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+interceptor();
 root.render(
   <React.StrictMode>
     <App />

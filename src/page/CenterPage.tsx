@@ -1,57 +1,180 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import axios from "axios";
+import { Button, Card, CardImg, Col, Container, Placeholder, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
 
 const CenterPage: React.FC = () => {
     const Navigate = useNavigate();
-    const accessToken = localStorage.getItem("accessToken");
     const baseurl = process.env.REACT_APP_BASEURL;
-    const getappapi = process.env.REACT_APP_GETALLAPI;
-    const [centerData, setCenterData] = useState([]);
-    const fetchData = async () => {
+    const [centerData, setCenterData] = useState<any[]>([]);
+    const [useid, setUseId] = useState("");
+    const [showContent, setShowContent] = useState<string>("");
+    // const[idvalue,setIdvalue]=useState();
+    const [idValue, setIdValue] = useState([]);
+
+    const account = async () => {
         try {
-            const response = await axios.get(
-                `${baseurl}${getappapi}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        "ngrok-skip-browser-warning": "true",
-                    },
-                }
-            );
-            setCenterData(response.data);        
-        } catch (error) {
-            console.error("Error fetching data:", error);
+            const response = await axios.get(`${baseurl}/api/account`);
+            const authorities = response.data.authorities;
+            localStorage.setItem('authorities', JSON.stringify(authorities));
+            const useidResponse = response.data.orgId;
+            console.log(useidResponse);
+            // localStorage.getItem("orgId",useidResponse);
+            const centerid = response.data.centerId;
+            console.log(centerid);
+
+            // setCenterIdValue(centerid);
+            // localStorage.getItem('CURRENTLOCATIONID', centerIdValue);       
+            setUseId(useidResponse);
+            console.log(useid);
+        } catch (err) {
+            console.log(err);
         }
     };
-
+    // const centerorganizationId = () => {
+    //     if (useid) {
+    //         axios.get(`${baseurl}/api/v1/centers?organizationId.equals=${useid}`)
+    //             .then(res => {
+    //                 console.log(res.data);
+    //                 setCenterData(res.data);
+    //                 setShowContent("false");
+    //                 const organizationIds = res.data.map(item => item.organization.id);
+    //                 console.log(organizationIds);
+    //                 setIdvalue(organizationIds);
+    //             })
+    //             .catch(err => {
+    //                 console.log(err);
+    //             });
+    //     }
+    // };
     useEffect(() => {
-        fetchData();
-    },[]);
-    const handleClick = () => {
+        const fetchCenterData = async () => {
+            if (useid) {
+                try {
+                    const response = await axios.get(`${baseurl}/api/v1/centers?organizationId.equals=${useid}`);
+                    console.log(response.data);
+                    setCenterData(response.data);
+                    setShowContent(true);
+                    const organizationIds = response.data.map(item => item.organization.id);
+                    console.log(organizationIds);
+                    setIdValue(organizationIds);
+                    console.log(idValue);
+                    
+                } catch (error) {
+                    console.log('Error fetching data:', error);
+                }
+            }
+        };
+
+        fetchCenterData();
+    }, [useid]);
+    useEffect(() => {
+        account();
+        // centerorganizationId();
+    }, [useid]);
+    
+    const handleClick = (useid: any) => {
         Navigate('/reservation');
+        localStorage.setItem("orgId", useid);
+    };
+    
+    if (!showContent) {
+        return (
+            <div>
+                <Row >
+                    <Col xs={12} className=' mt-3'>
+                        <div className="d-flex justify-content-between">
+                            <Card style={{ width: '18rem' }}>
+                                <Placeholder as={Card.Text} animation="glow">
+                                    <Placeholder xs={12} size="lg" />
+                                </Placeholder>
+                                <Card.Body>
+                                    <Placeholder as={Card.Title} animation="glow">
+                                        <Placeholder xs={6} />
+                                    </Placeholder>
+                                    <Placeholder as={Card.Text} animation="glow">
+                                        <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{' '}
+                                        <Placeholder xs={6} /> <Placeholder xs={8} />
+                                    </Placeholder>
+                                    <Placeholder.Button variant="primary" xs={6} />
+                                </Card.Body>
+                            </Card>
+                            <Card style={{ width: '18rem' }}>
+                                <Placeholder as={Card.Text} animation="glow">
+                                    <Placeholder xs={12} size="lg" />
+                                </Placeholder>
+                                <Card.Body>
+                                    <Placeholder as={Card.Title} animation="glow">
+                                        <Placeholder xs={6} />
+                                    </Placeholder>
+                                    <Placeholder as={Card.Text} animation="glow">
+                                        <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{' '}
+                                        <Placeholder xs={6} /> <Placeholder xs={8} />
+                                    </Placeholder>
+                                    <Placeholder.Button variant="primary" xs={6} />
+                                </Card.Body>
+                            </Card>
+                            <Card style={{ width: '18rem' }}>
+                                <Placeholder as={Card.Text} animation="glow">
+                                    <Placeholder xs={12} size="lg" />
+                                </Placeholder>
+                                <Card.Body>
+                                    <Placeholder as={Card.Title} animation="glow">
+                                        <Placeholder xs={6} />
+                                    </Placeholder>
+                                    <Placeholder as={Card.Text} animation="glow">
+                                        <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{' '}
+                                        <Placeholder xs={6} /> <Placeholder xs={8} />
+                                    </Placeholder>
+                                    <Placeholder.Button variant="primary" xs={6} />
+                                </Card.Body>
+                            </Card>
+                            <Card style={{ width: '18rem' }}>
+                                <Placeholder as={Card.Text} animation="glow">
+                                    <Placeholder xs={12} size="lg" />
+
+                                </Placeholder>
+                                <Card.Body>
+                                    <Placeholder as={Card.Title} animation="glow">
+                                        <Placeholder xs={6} />
+                                    </Placeholder>
+                                    <Placeholder as={Card.Text} animation="glow">
+                                        <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{' '}
+                                        <Placeholder xs={6} /> <Placeholder xs={8} />
+                                    </Placeholder>
+                                    <Placeholder.Button variant="primary" xs={6} />
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+        );
     }
     return (
         <Container>
-            <Row>
-                <Col xs={10} className="backgroundcolor w-100">
-                    <p className="fw-bold">Center</p>
-                    <hr></hr>
-                    <div className="bg-white rounded-3 p-2  ">
-                        <Row className="w-100">
-                            {centerData.map((center) => (
-                                <Card key={center.id} style={{ width: '17rem' }} className="cardimage ms-4 mt-4  p-0">
-                                    <Card.Img variant="top" className="cardimage" onClick={() => handleClick()} />
-                                    <Card.Body className="cardBody" onClick={() => handleClick()}>
-                                        <Card.Text className="Cardtext fw-medium">
+        <Row>
+            <Col xs={10} className="backgroundcolor w-100">
+                <p className="fw-bold">Center</p>
+                <hr></hr>
+                <div className="bg-white rounded-3 p-2">
+                    <Row className="w-100">
+                        {centerData.map((center) => (
+                            <Col key={center.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
+                                <Card>
+                                    <Card.Body className="p-0">
+                                        {center.photos && center.photos.length > 0 ? (
+                                            <Card.Img variant="top" src={center.photos[0].url} className="cardImage" style={{ height: "100px" }} onClick={() => handleClick(useid)}  />
+                                        ) : (
+                                            <div className="cardimage"></div>
+                                        )}
+                                        <Card.Text className="fw-medium Cardtext cardBody  p-2" onClick={()=>handleClick(useid)}>
                                             <div>
                                                 {center.streetAddress}, {center.city},
                                             </div>
-                                            {center.stateProvince} ,
+                                            {center.stateProvince},
                                             <p className="fw-medium fs-6 text-secondary">Business hours</p>
-                                            {center.centerHours.map((hours: { id: React.Key | null | undefined; weekday: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; startTime: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; endTime: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
+                                            {center.centerHours.map((hours: any) => (
                                                 <p className="fw-medium" key={hours.id}>
                                                     {hours.weekday}: {hours.startTime} - {hours.endTime}
                                                 </p>
@@ -59,12 +182,13 @@ const CenterPage: React.FC = () => {
                                         </Card.Text>
                                     </Card.Body>
                                 </Card>
-                            ))}
-                        </Row>
-                    </div>
-                </Col>
-            </Row>
-        </Container>
+                            </Col>
+                        ))}
+                    </Row>
+                </div>
+            </Col>
+        </Row>
+    </Container>    
     );
 };
 

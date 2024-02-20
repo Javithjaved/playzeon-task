@@ -27,20 +27,17 @@ const LoginPage: React.FC = ({setIsSignedIn}) => {
             .then(res => {
                 localStorage.setItem("accessToken", res.data.accessToken);
                 console.log(res.data.accessToken);
-                localStorage.setItem("refreshToken", res.data.refreshToken);
+                localStorage.setItem("refreshToken",res.data.refreshToken);
                 console.log(res.data.refreshToken);
-                // window.location.href = "/center";
+                window.location.href = "/center";
                 setIsSignedIn(true);
-                Navigate("/center")
                 console.log(res);
             })
             .catch(err => {
                 Navigate("/");
                 console.log(err);
-            })
+            })  
     }
-    console.log(baseurl);
-
     return (
         <div>
             <Container fluid className="p-0 col-sm-12 col-md-12 " >
@@ -59,7 +56,7 @@ const LoginPage: React.FC = ({setIsSignedIn}) => {
                         </Container>
                     </Navbar>
                     <Row >
-                        <Col className=" text-center  m-auto text-light d-none d-md-block  ">
+                        <Col xs={4} sm={5} lg={6} className=" text-center  m-lg-auto m-md-auto  h-50  text-light d-none d-md-block  ">
 
                             <h4 className="fs-2">Book sports center</h4>
                             <div className="row">
@@ -69,10 +66,10 @@ const LoginPage: React.FC = ({setIsSignedIn}) => {
                             <div className="row">
                                 <div className="col-1 hr mt-3 mb-3"></div>
                             </div>
-                            <h4 className="fs-2">Signup for lessons</h4>
+                            <h4 className="fs-2">Signup for lessons</h4>         
                         </Col>
-                        <Col sm={12} lg={5} xl={5} md={5} className="h-75 p-3 ms-2"  >
-                            <div className=" bg-light rounded-2 p-4 mt-5 me-5" >
+                        <Col sm={8} lg={5} xl={4} md={4} className="ps-2 pe-4  ms-2"  >
+                            <div className=" bg-light rounded-2 p-4 mt-5 me-lg-5 m-0" >
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <Form.Label className="mt-2 mb-4">Email address</Form.Label>
                                     <Form.Control type="email" placeholder="Email Address" name="userName" value={data.userName} onChange={(e) => handleChange(e)} />
@@ -89,10 +86,11 @@ const LoginPage: React.FC = ({setIsSignedIn}) => {
                                 <div>
                                     <Row>
                                         <Col><p className="mt-3 mb-2" >Don't have an account?</p> <p className="text-danger fw-bold">Sign up</p></Col>
-                                        <Col><p className="p-0 mb-2 mt-3">Are you a sports organiztion?</p> <p className="text-danger fw-bold">Partner with us</p></Col>
+                                        <Col><p className="p-0 mb-2 mt-3 ">Are you a sports organiztion?</p> <p className="text-danger fw-bold">Partner with us</p></Col>
                                     </Row>
                                 </div>
                             </div>
+                            {/* <DigitalClock /> */}
                         </Col>
                     </Row>
                 </div>

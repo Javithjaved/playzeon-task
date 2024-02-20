@@ -9,14 +9,14 @@ import { Col, Container, Row } from 'react-bootstrap';
 import SideBar from './components/SideBar.tsx';
 import Reservation from './page/Reservation.tsx';
 import PrivateRoutes from './components/PrivateRoutes.tsx';
-
+import ReservationTable from '../src/components/Table.tsx';
 function App() {
   const routesWithoutHeaderAndSidebar = ['/'];
   const shouldHideHeaderAndSidebar = routesWithoutHeaderAndSidebar.includes(window.location.pathname);
   const [active, setActive] = useState();
-  const [data, setData] = useState(new Date());
+  const [data, setData] = useState([]);
   const [bookingType, setBookingType] = useState("");
-  const [showFrequency, setShowFrequency] = useState(true);
+  const [showFrequency, setShowFrequency] = useState(Boolean);
   const [timevalue, setTimeValue] = useState("");
   const [timeset, settimeSet] = useState("");
   const [showSelect, setShowSelect] = useState(true);
@@ -24,6 +24,12 @@ function App() {
   useEffect(() => {
     localStorage.setItem("IsSigedIn Status", isSignedIn);
   }, [isSignedIn]); 
+  const [playerData, setPlayerData] = useState({
+    FirstName: "",
+    LastName: "",
+    Mobile: "",
+    EmailAddress: "",
+})
   return (
     <>
       <Container fluid className='p-0'>
@@ -35,7 +41,8 @@ function App() {
               <Routes>
                 <Route path="/" element={<LoginPage isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}/>} />
                 <Route path='/center' element={<PrivateRoutes isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}><CenterPage isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}/></PrivateRoutes>} />
-                <Route path='/reservation' element={<PrivateRoutes isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}><Reservation data={data} setData={setData} bookingType={bookingType} setBookingType={setBookingType} showFrequency={showFrequency} setShowFrequency={setShowFrequency} timevalue={timevalue}  setTimeValue={setTimeValue}  settimeSet={settimeSet} timeset={timeset} showSelect={showSelect} setShowSelect={setShowSelect} isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} /></PrivateRoutes>}/>
+                <Route path='/reservation' element={<PrivateRoutes isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}><Reservation data={data} playerData={playerData} setPlayerData={setPlayerData} setData={setData} bookingType={bookingType} setBookingType={setBookingType} showFrequency={showFrequency} setShowFrequency={setShowFrequency} timevalue={timevalue}  setTimeValue={setTimeValue}  settimeSet={settimeSet} timeset={timeset} showSelect={showSelect} setShowSelect={setShowSelect} isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} /></PrivateRoutes>}/>
+                <Route path='/table' element={<PrivateRoutes isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}><ReservationTable playerData={playerData} setPlayerData={setPlayerData} /></PrivateRoutes>}></Route>
               </Routes>     
             </Col>
           </Row>
