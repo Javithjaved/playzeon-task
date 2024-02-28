@@ -90,8 +90,8 @@ const Header: React.FC = ({ setIsSignedIn }) => {
                             <Icon icon="mingcute:user-4-line" className='fs-2' />
                             <span>{FirstName} {LastName}</span>
                         </Nav.Link>
-                        <Nav.Link eventKey={2}>
-                            <NavDropdown id="collapsible-nav-dropdown" className='text-light'>
+                        <Nav.Link eventKey={2} >
+                            <NavDropdown id="collapsible-nav-dropdown" className=' margin'>
                                 <NavDropdown.Item>Organization info</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item onClick={(e) => handleNavigate(e)}>

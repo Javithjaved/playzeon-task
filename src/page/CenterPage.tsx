@@ -9,9 +9,8 @@ const CenterPage: React.FC = () => {
     const [centerData, setCenterData] = useState<any[]>([]);
     const [useid, setUseId] = useState("");
     const [showContent, setShowContent] = useState<string>("");
-    // const[idvalue,setIdvalue]=useState();
     const [idValue, setIdValue] = useState([]);
-
+      const centerids = localStorage.getItem("CurrentCenterId");
     const account = async () => {
         try {
             const response = await axios.get(`${baseurl}/api/account`);
@@ -19,65 +18,41 @@ const CenterPage: React.FC = () => {
             localStorage.setItem('authorities', JSON.stringify(authorities));
             const useidResponse = response.data.orgId;
             console.log(useidResponse);
-            // localStorage.getItem("orgId",useidResponse);
+            localStorage.getItem("orgId", useidResponse);
             const centerid = response.data.centerId;
             console.log(centerid);
-
-            // setCenterIdValue(centerid);
-            // localStorage.getItem('CURRENTLOCATIONID', centerIdValue);       
             setUseId(useidResponse);
-            console.log(useid);
         } catch (err) {
             console.log(err);
         }
     };
-    // const centerorganizationId = () => {
-    //     if (useid) {
-    //         axios.get(`${baseurl}/api/v1/centers?organizationId.equals=${useid}`)
-    //             .then(res => {
-    //                 console.log(res.data);
-    //                 setCenterData(res.data);
-    //                 setShowContent("false");
-    //                 const organizationIds = res.data.map(item => item.organization.id);
-    //                 console.log(organizationIds);
-    //                 setIdvalue(organizationIds);
-    //             })
-    //             .catch(err => {
-    //                 console.log(err);
-    //             });
-    //     }
-    // };
-    useEffect(() => {
-        const fetchCenterData = async () => {
-            if (useid) {
-                try {
-                    const response = await axios.get(`${baseurl}/api/v1/centers?organizationId.equals=${useid}`);
-                    console.log(response.data);
-                    setCenterData(response.data);
-                    setShowContent(true);
-                    const organizationIds = response.data.map(item => item.organization.id);
-                    console.log(organizationIds);
-                    setIdValue(organizationIds);
-                    console.log(idValue);
-                    
-                } catch (error) {
-                    console.log('Error fetching data:', error);
-                }
-            }
-        };
 
-        fetchCenterData();
-    }, [useid]);
+    const fetchCenterData = async () => {
+        if (useid) {
+            try {
+                const response = await axios.get(`${baseurl}/api/v1/centers?organizationId.equals=${useid}`);
+                console.log(response.data);
+                setCenterData(response.data);
+                setShowContent(true);
+                const organizationIds = response.data.map((item: { organization: { id: number; }; }) => item.organization.id);
+                // console.log(organizationIds);
+                setIdValue(organizationIds);
+                console.log(idValue);
+
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        }
+    };
     useEffect(() => {
         account();
-        // centerorganizationId();
+        fetchCenterData();
     }, [useid]);
-    
-    const handleClick = (useid: any) => {
-        Navigate('/reservation');
-        localStorage.setItem("orgId", useid);
+    const handleClick = (id: string) => {
+        console.log("Clicked on id:", id);
+        localStorage.setItem("CurrentCenterId", id);
+        Navigate("/reservation")
     };
-    
     if (!showContent) {
         return (
             <div>
@@ -153,42 +128,49 @@ const CenterPage: React.FC = () => {
     }
     return (
         <Container>
-        <Row>
-            <Col xs={10} className="backgroundcolor w-100">
-                <p className="fw-bold">Center</p>
-                <hr></hr>
-                <div className="bg-white rounded-3 p-2">
-                    <Row className="w-100">
-                        {centerData.map((center) => (
-                            <Col key={center.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
-                                <Card>
-                                    <Card.Body className="p-0">
-                                        {center.photos && center.photos.length > 0 ? (
-                                            <Card.Img variant="top" src={center.photos[0].url} className="cardImage" style={{ height: "100px" }} onClick={() => handleClick(useid)}  />
-                                        ) : (
-                                            <div className="cardimage"></div>
-                                        )}
-                                        <Card.Text className="fw-medium Cardtext cardBody  p-2" onClick={()=>handleClick(useid)}>
-                                            <div>
-                                                {center.streetAddress}, {center.city},
-                                            </div>
-                                            {center.stateProvince},
-                                            <p className="fw-medium fs-6 text-secondary">Business hours</p>
-                                            {center.centerHours.map((hours: any) => (
-                                                <p className="fw-medium" key={hours.id}>
-                                                    {hours.weekday}: {hours.startTime} - {hours.endTime}
-                                                </p>
-                                            ))}
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        ))}
-                    </Row>
-                </div>
-            </Col>
-        </Row>
-    </Container>    
+            <Row>
+                <Col xs={10} className="backgroundcolor w-100">
+                    <p className="fw-bold">Center</p>
+                    <hr></hr>
+                    <div className="bg-white rounded-3 p-2">
+                        <Row className="w-100">
+                            {centerData.map((center) => (
+                                <Col key={center.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
+                                    <Card>
+                                        <Card.Body className="p-0">
+                                            {center.photos && center.photos.length > 0 ? (
+                                                <Card.Img
+                                                    variant="top"
+                                                    src={center.photos[0].url}
+                                                    className="cardImage"
+                                                    style={{ height: "100px" }}
+                                                    onClick={() => handleClick(center.id)}
+                                                />
+
+                                            ) : (
+                                                <div className="cardimage"></div>
+                                            )}
+                                            <Card.Text className="fw-medium Cardtext cardBody  p-2" onClick={() => handleClick(center.id)}>
+                                                <div>
+                                                    {center.streetAddress}, {center.city},
+                                                </div>
+                                                {center.stateProvince},
+                                                <p className="fw-medium fs-6 text-secondary">Business hours</p>
+                                                {center.centerHours.map((hours: any) => (
+                                                    <p className="fw-medium" key={hours.id}>
+                                                        {hours.weekday}: {hours.startTime} - {hours.endTime}
+                                                    </p>
+                                                ))}
+                                            </Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            ))}
+                        </Row>
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 
