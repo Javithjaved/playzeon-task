@@ -1,19 +1,19 @@
 import { Icon } from "@iconify/react";
 import React, { useContext, useEffect, useState } from "react";
-import { Alert, Badge, Button, Col, Container, FloatingLabel, Form, InputGroup, Offcanvas, Row, Spinner } from "react-bootstrap";
-import { Facilitytype, Facilities, BookingType, FrequencyWeeks, time, days } from '../utils/data.tsx';
+import { Alert, Badge, Button, Col, Container, FloatingLabel, Form, Offcanvas, Row, Spinner } from "react-bootstrap";
+import { BookingType, FrequencyWeeks, days } from '../utils/data.tsx';
 import 'react-datepicker/dist/react-datepicker.css';
-import { format, eachDayOfInterval, getDay } from 'date-fns';
+import { eachDayOfInterval, getDay } from 'date-fns';
 import axios from "axios";
-import { Calendar, Navigate, dateFnsLocalizer, momentLocalizer } from 'react-big-calendar';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 import "react-big-calendar/lib/css/react-big-calendar.css"
-import parse from 'date-fns/parse';
-import startOfWeek from 'date-fns/startOfWeek';
-import enUS from 'date-fns/locale/en-US';
+// import parse from 'date-fns/parse';
+// import startOfWeek from 'date-fns/startOfWeek';
+// import enUS from 'date-fns/locale/en-US';
 import ReservationTable from "../components/Table.tsx";
 import moment from 'moment';
 import PlayerTable from "../components/PlayerTable.tsx";
-import photo from "../asset/image/logo.png";
+// import photo from "../asset/image/logo.png";
 import { userdate } from "../Context/Context.tsx";
 import * as formik from 'formik';
 import * as yup from 'yup';
@@ -39,14 +39,14 @@ interface userData {
 
 const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookingType, showFrequency, setShowFrequency, setShowSelect, timevalue, setTimeValue, timeset, settimeSet, titelName, addTitelName, setPlayerDatas, playerDatas, playerDataList, setPlayerDataList, playerAllData, setPlayerAllData }) => {
     const { Formik } = formik;
-    const { setFacilitylist, setPricingRule, setPricingCost, facilitylist, costPricingValues, setCostPricingValues } = useContext(userdate);
+    const { setPricingRule, setPricingCost, facilitylist, costPricingValues, setCostPricingValues } = useContext(userdate);
     const Booking = BookingType;
     const weeks = FrequencyWeeks;
     const baseurl = process.env.REACT_APP_BASEURL;
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [userdata, setUserDate] = useState([])
-    const daysOfWeek = days;
+    // const daysOfWeek = days;
     const [pricingRules, setPricingRules] = useState([]);
     const centerids = localStorage.getItem("CurrentCenterId");
     const [Bookingshow, setBookingShow] = useState(false);
@@ -355,6 +355,7 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
             title: 'Event 1',
             start: new Date(2024, 3, 16, 10, 0), // Year, Month (0-indexed), Day, Hour, Minute
             end: new Date(2024, 3, 16, 12, 0),
+            title: "java",
         },
         {
             id: 2,
@@ -409,10 +410,6 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                 console.log(err);
             })
     }
-
-    
-
-    
     return (
         <Container>
             <Row>
@@ -479,6 +476,7 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                         events={events}
                                         startAccessor="start"
                                         endAccessor="end"
+                                        views={['month', 'week', 'day']} // Specify the views you want to include
                                     />
                                 </div>
                             </Row>
@@ -797,10 +795,11 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                 validationSchema={schema1}
                                                 onSubmit={handleSubmitPlayerList}
                                                 initialValues={{
-                                                    FirstName: '',
-                                                    LastName: '',
+                                                    FirstName: isNameDisclosureChecked ? "name not disclosed" : '',
+                                                    LastName: isNameDisclosureChecked ? "name not disclosed" : '',
                                                     facility: '',
                                                     pricingRule: '',
+
                                                 }}
                                                 enableReinitialize={true}
                                             >
@@ -818,7 +817,7 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                                     type="text"
                                                                     onChange={handleChange}
                                                                     name="FirstName"
-                                                                    value={playerDatas.isNameDisclosureChecked ? playerDatas.dis : values.FirstName}
+                                                                    value={isNameDisclosureChecked ? "Name not disclosed" : values.FirstName}
                                                                     isInvalid={!!errors.FirstName && touched.FirstName}
                                                                     disabled={isNameDisclosureChecked}
                                                                 />
@@ -832,7 +831,7 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                                     type="text"
                                                                     onChange={handleChange}
                                                                     name="LastName"
-                                                                    value={playerDatas.isNameDisclosureChecked ? playerDatas.dis : values.LastName}
+                                                                    value={isNameDisclosureChecked ? "Name not disclosed" : values.LastName}
                                                                     isInvalid={!!errors.LastName && touched.LastName}
                                                                     disabled={isNameDisclosureChecked}
                                                                 />
