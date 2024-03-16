@@ -17,7 +17,7 @@ const LoginPage: React.FC = ({setIsSignedIn}) => {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setdata({ ...data, [event.target.name]: event.target.value });
-    }
+    }  
     const handleSubmit = () => {
         axios({
             method: "post",

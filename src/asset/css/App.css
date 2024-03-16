@@ -18,6 +18,9 @@ body{
     margin-left: 46%;
     border-top: 3px solid gray;
 }
+.pricingruleshight{
+    height: 120px;
+}
 .backgroundcolor{
     background-color: whitesmoke;
  
@@ -78,13 +81,3 @@ body{
     right: 0;
     transform: translateX(3) !important;
 }
-/* .rbc-row {
-    background-color: red;
-    color: white;
-} */
-/* .facilitylist{
-    height: 100px;
-} */
-/* .margin {
-    margin-left: -400px!important;
-  } */

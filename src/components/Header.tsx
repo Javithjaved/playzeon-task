@@ -6,6 +6,7 @@ import photo from "../asset/image/logo.png";
 import { Icon } from '@iconify/react';
 import axios from 'axios';
 import { First } from 'react-bootstrap/esm/PageItem';
+import Dropdown from 'react-bootstrap/Dropdown'
 
 const Header: React.FC = ({ setIsSignedIn }) => {
     const [FirstName, setFirstName] = useState<string>("");
@@ -30,7 +31,7 @@ const Header: React.FC = ({ setIsSignedIn }) => {
             const firstName = response.data.firstName;
             const lastName = response.data.lastName;
             const orgname = response.data.orgName;
-            const centers = response.data.centerName;      
+            const centers = response.data.centerName;
             setCenter(centers);
             setLastName(lastName);
             setFirstName(firstName);
@@ -53,7 +54,7 @@ const Header: React.FC = ({ setIsSignedIn }) => {
     };
 
     useEffect(() => {
-   account();
+        account();
     }, [useid]);
 
     useEffect(() => {
@@ -88,16 +89,18 @@ const Header: React.FC = ({ setIsSignedIn }) => {
                     <Nav style={{ display: 'contents' }}>
                         <Nav.Link>
                             <Icon icon="mingcute:user-4-line" className='fs-2' />
-                            <span>{FirstName} {LastName}</span>
+                            <span className='ms-2'>{FirstName} {LastName}</span>
                         </Nav.Link>
-                        <Nav.Link eventKey={2} >
-                            <NavDropdown id="collapsible-nav-dropdown" className=' margin'>
-                                <NavDropdown.Item>Organization info</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item onClick={(e) => handleNavigate(e)}>
-                                    Log out
-                                </NavDropdown.Item>
-                            </NavDropdown>
+                        <Nav.Link>
+                            <Dropdown>
+                                <Dropdown.Toggle variant='dark' id="dropdown-basic">
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu style={{ left: '-120px' }}>
+                                    <Dropdown.Item href="#/action-1">Organization info</Dropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <Dropdown.Item href="#/action-2" onClick={(e)=>handleNavigate(e)}>Log out</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
