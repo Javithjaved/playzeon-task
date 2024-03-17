@@ -17,6 +17,7 @@ import PlayerTable from "../components/PlayerTable.tsx";
 import { userdate } from "../Context/Context.tsx";
 import * as formik from 'formik';
 import * as yup from 'yup';
+import swal from 'sweetalert';
 
 interface userData {
     data: string;
@@ -243,6 +244,7 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                 const sports = res.data;
                 setUserDate(sports);
 
+
             })
             .catch(err => {
                 console.log(err);
@@ -260,7 +262,6 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                 console.log(err);
             })
     }
-
     const fetchFacilityTypes = (e: React.ChangeEvent<HTMLSelectElement> | undefined) => {
         axios.get(`${baseurl}/api/v1/facilityList?sportId.equals=${e.target.value}&centerId.equals=${centerids}`)
             .then(response => {
@@ -287,6 +288,8 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                 console.error("Error fetching facilities:", error);
             });
     };
+    
+
     const account = async () => {
         try {
             const response = await axios.get(`${baseurl}/api/account`);
@@ -353,9 +356,9 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
         {
             id: 1,
             title: 'Event 1',
-            start: new Date(2024, 3, 16, 10, 0), // Year, Month (0-indexed), Day, Hour, Minute
+            start: new Date(2024, 3, 16, 10, 0),
             end: new Date(2024, 3, 16, 12, 0),
-            title: "java",
+            facilityId: 1,
         },
         {
             id: 2,
@@ -365,7 +368,7 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
         },
     ]);
 
-    const pricingrule = (facilitiesId) => {
+    const pricingrule = (facilitiesId: never[]) => {
         axios({
             method: "get",
             url: `${baseurl}/api/v1/pricing-rules?centerId=${centerids}&facilityIds=${facilitiesId}`
@@ -410,6 +413,21 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                 console.log(err);
             })
     }
+    const handleproccedtoBook = () => {
+        swal({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Successfully Booked your Center!!',
+            showConfirmButton: true,
+            confirmButtonText: 'Okay',
+            closeOnClickOutside: false
+        }).then(() => {
+            setTimeout(() => {
+                window.location.href = "/reservation";
+            }, 1000);
+        });
+    }
+
     return (
         <Container>
             <Row>
@@ -431,17 +449,15 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                             <div className="d-md-flex">
                                 <Col md={2} lg={2} xl={3}>
                                     <Form.Label>Facility type <span className="text-danger"> *</span></Form.Label>
-                                    <Form.Select className="form-control mt-2" name="Facility" onChange={(e) => fetchFacilityTypes(e)} onClick={(e) => fetchFacilities(e)} >
-                                        {userdata.map((title, index) => {
-                                            return (
-                                                <option key={index} value={title.sport.id}  >{title.title}</option>
-                                            )
-                                        })}
+                                    <Form.Select className="form-control mt-2" name="Facility" onChange={fetchFacilities}>
+                                        {userdata.map((title, index) => (
+                                            <option key={index} value={title.sport.id}>{title.title}</option>
+                                        ))}
                                     </Form.Select>
                                 </Col>
                                 <Col md={2} lg={2} xl={3} className="ms-lg-2 ms-md-2">
                                     <Form.Label>Facilities <span className="text-danger"> *</span></Form.Label>
-                                    <Form.Select className="form-control mt-2 ms-md-2 mx-0" name="Facilitie" onChange={(e) => fetchFacilities(e)} >
+                                    <Form.Select className="form-control mt-2 ms-md-2 mx-0" name="Facilitie">
                                         {facilitiesListData.map((facility, index) => (
                                             <option key={index} value={facility.id}>{facility.name}</option>
                                         ))}
@@ -476,7 +492,8 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                         events={events}
                                         startAccessor="start"
                                         endAccessor="end"
-                                        views={['month', 'week', 'day']} // Specify the views you want to include
+                                        views={['month', 'week', 'day']}
+
                                     />
                                 </div>
                             </Row>
@@ -768,14 +785,13 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                     </div>
                                                     <div>
                                                         <p className="fs-5">Facility type</p>
-                                                        <p className="fw-medium ">{data.title}</p>
+                                                        <p className="fw-medium ">{selectedFacility}</p>
                                                         <hr></hr>
                                                     </div>
                                                     <div >
-                                                        <p className="fs-5 fw-medium">Player's Facility and pricing details </p>
                                                         <div>
                                                             {tableShow &&
-                                                                <ReservationTable playerAllData={playerAllData} costPricingValues={costPricingValues} playerDatas={playerDatas} />
+                                                                <><p className="fs-5 fw-medium">Player's Facility and pricing details <Badge bg="danger">1</Badge> </p><ReservationTable playerAllData={playerAllData} costPricingValues={costPricingValues} playerDatas={playerDatas} /></>
                                                             }
                                                         </div>
                                                     </div>
@@ -903,7 +919,6 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                 )}
                                             </Formik>
                                         </div>
-
                                     </Offcanvas.Body>
                                 </Offcanvas>
                                 <Offcanvas className='w-75' show={Bookingshow} onHide={handleBookingClose} placement="end">
@@ -924,6 +939,7 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                             )}
                                                         </div>
                                                         <p>{facilitylist}</p>
+                                                        <p className="fw-bold">FootBall field</p>
                                                     </div>
                                                     <div className="border p-3">
                                                         <Row>
@@ -933,7 +949,8 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                             </Col>
                                                             <Col>
                                                                 <Form.Label>facliity Type</Form.Label>
-                                                                <p className="fw-bold fs-5">{facilitylist}</p>
+                                                                {/* <p className="fw-bold fs-5">{facilitylist}</p> */}
+                                                                <p className="fw-bold">FootBall field</p>
                                                             </Col>
                                                             <Col>
                                                                 <Form.Label>Booking Occurance</Form.Label>
@@ -990,7 +1007,7 @@ const Reservation: React.FC<userData> = ({ data, setData, bookingType, setBookin
                                                         </div>
                                                     </div>
                                                     <div className="text-center p-3">
-                                                        <Button variant="danger" className="p-3" >Book Now</Button>
+                                                        <Button variant="danger" className="p-3" onClick={handleproccedtoBook}>Book Now</Button>
                                                     </div>
                                                 </Col>
                                             </Row>

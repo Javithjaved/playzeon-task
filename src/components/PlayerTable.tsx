@@ -15,7 +15,7 @@ const PlayerTable = ({ handleShowPlayer, playerDatas, playerDataList, setPlayerD
 
     return (
         <div>
-            <Table striped bordered hover>
+            <Table striped bordered hover responsive variant="light">
                 <thead>
                     <tr>
                         <th>S.No</th>

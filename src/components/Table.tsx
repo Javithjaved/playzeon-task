@@ -3,12 +3,13 @@ import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import { userdate } from '../Context/Context.tsx';
 import React from 'react';
+import { array } from 'yup';
 const ReservationTable = ({ playerAllData, costPricingValues, playerDatas }) => {
     console.log(costPricingValues);
     const { pricingCost } = useContext(userdate);
     return (
         <>
-            <Table striped bordered hover variant="light">
+            <Table striped bordered hover variant="light" responsive>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -25,6 +26,18 @@ const ReservationTable = ({ playerAllData, costPricingValues, playerDatas }) => 
                         <td>{playerAllData.pricingRule}</td>
                         <td className='fw-bold '>$ {pricingCost}</td>
                     </tr>
+                    {Array.isArray(playerDatas)  && playerDatas.map((player,index)=>{
+                        return(
+                            <tr>
+                                <td>{player.FirstName}</td>
+                                <td>{player.facility}</td>
+                                <td>{player.pricingRule}</td>
+                                <td className='fw-bold'> $ {pricingCost}</td>
+                            </tr>
+                        )
+                    })
+
+                    }
                     <tr>
                         {/* {Array.isArray(playerDatas) && playerDatas.map((player, index) => {
                             return (
@@ -36,7 +49,6 @@ const ReservationTable = ({ playerAllData, costPricingValues, playerDatas }) => 
                                 </tr>
                             );
                         })} */}
-
                     </tr>
                     <tr>
                         <td colSpan={3}>Total priceing</td>

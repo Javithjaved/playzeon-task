@@ -157,9 +157,9 @@ const CenterPage: React.FC = () => {
                                                 {center.stateProvince},
                                                 <p className="fw-medium fs-6 text-secondary">Business hours</p>
                                                 {center.centerHours.map((hours: any) => (
-                                                    <p className="fw-medium" key={hours.id}>
-                                                        {hours.weekday}: {hours.startTime} - {hours.endTime}
-                                                    </p>
+                                                    <><p className="fw-medium" key={hours.id}>
+                                                        {hours.weekday}
+                                                    </p><p>     {hours.startTime} - {hours.endTime}</p></>
                                                 ))}
                                             </Card.Text>
                                         </Card.Body>

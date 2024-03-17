@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import LoginPage from '../src/page/LoginPage.tsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import CenterPage from './page/CenterPage.tsx';
+import CenterPage from '../src/page/CenterPage.tsx';
 import Header from './components/Header.tsx';
 import { Col, Container, Row } from 'react-bootstrap';
 import SideBar from './components/SideBar.tsx';
